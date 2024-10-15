@@ -33,6 +33,9 @@ gem "bootsnap", require: false
 # se mapearão diretamente para arquivos versionados, facilitando a gestão de dependências.
 gem "importmap-rails"
 
+# Faraday é usada para fazer requisições HTTP.
+gem "faraday"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
