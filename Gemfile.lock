@@ -103,12 +103,10 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
-    importmap (0.1.0)
-      activesupport
-      memoist
-      rainbow
-      thor
-      zeitwerk
+    importmap-rails (2.0.3)
+      actionpack (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      railties (>= 6.0.0)
     io-console (0.7.2)
     irb (1.14.1)
       rdoc (>= 4.0.0)
@@ -126,7 +124,6 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    memoist (0.16.2)
     mini_mime (1.1.5)
     minitest (5.25.1)
     msgpack (1.7.3)
@@ -282,7 +279,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
-  importmap
+  importmap-rails
   puma (>= 5.0)
   rails (~> 7.2.1)
   rubocop-rails-omakase

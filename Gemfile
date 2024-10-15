@@ -31,7 +31,7 @@ gem "bootsnap", require: false
 
 # Import Maps são uma nova funcionalidade que permite importar módulos JavaScript utilizando nomes lógicos que
 # se mapearão diretamente para arquivos versionados, facilitando a gestão de dependências.
-gem "importmap"
+gem "importmap-rails"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
