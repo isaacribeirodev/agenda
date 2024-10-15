@@ -31,7 +31,7 @@ class ContatosController < ApplicationController
     def update
         # Busca no banco de dados um contato com um ID específico.
         @contato = Contato.find(params[:id])
-        
+
         # Atualiza o contato no banco de dados. A função update retorna um booleano
         # indicando se a atualização foi realizada com sucesso.
         if @contato.update(contato_params)
