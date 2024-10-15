@@ -9,5 +9,4 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :contatos
-
 end
