@@ -17,14 +17,14 @@ puts "="*60
 # Configuração da Conexão com o Faraday.
 contato = Faraday.new(
     url: "https://expert-spoon-jxxgvxj7wxwfp7wj-3000.app.github.dev",
-    params: {param: "3"},
-    headers: {"Content-Type" => "application/json"}
+    params: { param: "3" },
+    headers: { "Content-Type" => "application/json" }
 )
 
 # Envia uma requisição HTTP com o verbo POST para submeter os dados colhidos pelo formulário de contato.
 resposta = contato.post('/contatos') do |requisicao|
     requisicao.params['limit'] = 100
-    requisicao.body = {nome: name, telefone: phone, email: correio}.to_json
+    requisicao.body = { nome: name, telefone: phone, email: correio }.to_json
 end
 
 # Apresenta no terminal o status da resposta HTTP.
