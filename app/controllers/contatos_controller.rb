@@ -58,7 +58,7 @@ class ContatosController < ApplicationController
 
     def destroy
         # Busca no banco de dados um contato com um ID específico.
-        @contato = Contato.find(params[:id])        
+        @contato = Contato.find(params[:id])
         # Verifica se o @contato pertence ao @usuario.
         if @contato.usuario_id == @usuario.id
             # Apaga o contato do banco de dados.
@@ -80,14 +80,13 @@ class ContatosController < ApplicationController
             # Se a variável token tiver algum valor, então busca um usuário que tenha o token igual ao guardado na
             # variável token e guarda o retorno na variável de instância @usuario.
             @usuario = Usuario.find_by_token(token) if token.present?
-            #Verifica se a variável @usuario é nil.
+            # Verifica se a variável @usuario é nil.
             if @usuario.nil?
                 # Caso a variável de instância @usuario seja nil, significa que nenhum usuário foi encontrado com o token fornecido.
                 # Nesse caso, responde a requisição com o JSON abaixo e status 401 Unauthorized (Não autorizado).
                 render json: { erro: "Não autorizado." }, status: :unauthorized
-                # Retorna para não executar a ação que foi requisitada.
-                return
+                # O render interrompe a execução do método.
             end
-            # Caso a variável de instância @usuario não seja nil, significa que o usuário foi encontrado e a requisição pode seguir.
+                # Caso a variável de instância @usuario não seja nil, significa que o usuário foi encontrado e a requisição pode seguir.
         end
 end
