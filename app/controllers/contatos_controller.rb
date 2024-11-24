@@ -84,9 +84,9 @@ class ContatosController < ApplicationController
             if @usuario.nil?
                 # Caso a variável de instância @usuario seja nil, significa que nenhum usuário foi encontrado com o token fornecido.
                 # Nesse caso, responde a requisição com o JSON abaixo e status 401 Unauthorized (Não autorizado).
-                render json: { erro: "Não autorizado." }, status: :unauthorized
                 # O render interrompe a execução do método.
+                render json: { erro: "Não autorizado." }, status: :unauthorized
             end
-                # Caso a variável de instância @usuario não seja nil, significa que o usuário foi encontrado e a requisição pode seguir.
+          # Caso a variável de instância @usuario não seja nil, significa que o usuário foi encontrado e a requisição pode seguir.
         end
 end
