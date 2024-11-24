@@ -14,16 +14,16 @@ puts "email:"
 correio = gets.chomp
 puts "="*60
 
-# Configuração da Conexão com o Faraday.
-contato = Faraday.new(
+# Configura a Conexão com o Faraday, fornecendo o cabeçalho HTTP Authorization.
+conexao = Faraday.new(
     url: "https://expert-spoon-jxxgvxj7wxwfp7wj-3000.app.github.dev",
     params: { param: "3" },
-    headers: { "Content-Type" => "application/json" }
+    headers: { "Authorization" => "85cb1f64072d4fb0dadd2beb5efd4661", "Content-Type" => "application/json" }
 )
 
 # Envia uma requisição HTTP com o verbo POST para submeter os dados colhidos pelo formulário de contato.
-resposta = contato.post('/contatos') do |requisicao|
-    requisicao.params['limit'] = 100
+resposta = conexao.post("/contatos") do |requisicao|
+    requisicao.params["limit"] = 100
     requisicao.body = { nome: name, telefone: phone, email: correio }.to_json
 end
 
@@ -44,7 +44,7 @@ end
 puts "="*60
 
 # Envia uma requisição HTTP com o verbo GET.
-agenda = Faraday.get("https://expert-spoon-jxxgvxj7wxwfp7wj-3000.app.github.dev/contatos")
+agenda = conexao.get("/contatos")
 
 # Função da classe JSON que transforma a string "agenda.body" em um hash com o intuito de
 # facilitar o acesso às propriedades do corpo da resposta HTTP.

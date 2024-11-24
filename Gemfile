@@ -53,6 +53,6 @@ group :development, :test do
   # how real users interact with your web application.
   gem "capybara"
 
-  # Facilita a especificação de testes em Ruby on Rails.
+  # Biblioteca para especificação de testes em Ruby on Rails.
   gem "rspec-rails"
 end
