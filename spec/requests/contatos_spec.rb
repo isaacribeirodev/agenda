@@ -142,7 +142,7 @@ RSpec.describe "API de Agenda de Contatos em Ruby on Rails", type: :request do
    # Bloco de especificação da operação DELETE /contatos/{id}.
    delete "Apagar um contato." do
      # Determina que o formato do corpo da resposta é JSON.
-     produces "application/json" 
+     produces "application/json"
 
      # Bloco de código define que uma possível resposta dessa operação é 204 (No content),
      # informando que o contato foi apagado com sucesso e o corpo da resposta está vazio.
