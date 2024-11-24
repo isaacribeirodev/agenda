@@ -6,20 +6,20 @@ RSpec.describe "API de Agenda de Contatos em Ruby on Rails", type: :request do
  let(:usuario) { Usuario.find_or_create_by(token: "74cb1f64073d4fb0dabb2beb6efd4771") { |u| u.nome = "Usuário de Teste" } }
  # Especifica o cabeçalho Authorization com o token do usuário de teste.
  let(:Authorization) { "Bearer #{usuario.token}" }
- 
+
  # Bloco que define as operações do caminho /contatos.
  path "/contatos" do
    # Bloco de especificação da operação POST /contatos.
-   post "Criar um contato." do 
+   post "Criar um contato." do
      consumes "application/json"
      # Bloco que determina o formato do objeto JSON que deve ser enviado na requisição.
      parameter name: :contato, in: :body, schema: {
        # Deve ser enviado um objeto JSON...
        type: :object,
        # com as seguintes propriedades:
-       properties: {         
-         nome: { type: :string }, # Propriedade nome do tipo string.         
-         telefone: { type: :string }, # Propriedade telefone do tipo string.         
+       properties: {
+         nome: { type: :string }, # Propriedade nome do tipo string.
+         telefone: { type: :string }, # Propriedade telefone do tipo string.
          email: { type: :string } # Propriedade email do tipo string.
        },
        # Define as propriedades obrigatórias.
@@ -103,8 +103,8 @@ RSpec.describe "API de Agenda de Contatos em Ruby on Rails", type: :request do
        # Define o formato do corpo da resposta...
        schema type: :object,
          # com as seguintes propriedades:
-         properties: {           
-           id: { type: :integer }, # Um parâmetro id do tipo inteiro.           
+         properties: {
+           id: { type: :integer }, # Um parâmetro id do tipo inteiro.
            nome: { type: :string }, # Um parâmetro nome do tipo string.
            email: { type: :string }, # um parâmetro email do tipo string.
            created_at: { type: :string }, # Um parâmetro created_at do tipo string.
@@ -124,7 +124,7 @@ RSpec.describe "API de Agenda de Contatos em Ruby on Rails", type: :request do
      # informando que o contato não foi encontrado.
      response "404", "Contato não encontrado." do
        # Cria uma variável "id" com o valor 9999 (o id de um contato que não existe).
-       let(:id) { 9999 }       
+       let(:id) { 9999 }
        # Executa o teste.
        run_test!
      end
@@ -133,7 +133,7 @@ RSpec.describe "API de Agenda de Contatos em Ruby on Rails", type: :request do
      # informando que o token de autenticação está ausente ou inválido.
      response "401", "Não autorizado." do
       # Simula a ausência do token de autenticação.
-      let(:Authorization) { nil }   
+      let(:Authorization) { nil }
       # Executa o teste.
       run_test!
      end
