@@ -1,8 +1,9 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "API V1",
-    "version": "v1"
+    "title": "API de Agenda de Contatos em Ruby on Rails",
+    "version": "v1",
+    "description": "Documentação da API (versão 1) com autenticação JWT."
   },
   "paths": {
     "/contatos": {
@@ -15,6 +16,9 @@
           },
           "422": {
             "description": "Requisição inválida."
+          },
+          "401": {
+            "description": "Não autorizado."
           }
         },
         "requestBody": {
@@ -47,6 +51,9 @@
         "responses": {
           "200": {
             "description": "Contatos listados com sucesso."
+          },
+          "401": {
+            "description": "Não autorizado."
           }
         }
       }
@@ -86,6 +93,9 @@
                     },
                     "updated_at": {
                       "type": "string"
+                    },
+                    "usuario_id": {
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -93,7 +103,8 @@
                     "nome",
                     "email",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
+                    "usuario_id"
                   ]
                 }
               }
@@ -101,6 +112,9 @@
           },
           "404": {
             "description": "Contato não encontrado."
+          },
+          "401": {
+            "description": "Não autorizado."
           }
         }
       },
@@ -109,6 +123,9 @@
         "responses": {
           "204": {
             "description": "Contato apagado com sucesso."
+          },
+          "401": {
+            "description": "Não autorizado."
           }
         }
       }
@@ -122,6 +139,20 @@
           "default": "www.example.com"
         }
       }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
     }
   ]
 }

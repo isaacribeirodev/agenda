@@ -1,102 +1,165 @@
-require 'swagger_helper'
+require "swagger_helper"
 
-RSpec.describe 'Agenda de Contatos API', type: :request do
- path '/contatos' do # bloco que define as operações do caminho /contatos
-   post 'Criar um contato.' do # bloco de especificação da operação POST /contatos
-     consumes 'application/json' # determina que o corpo da requisição deve estar no formato JSON
-     parameter name: :contato, in: :body, schema: { # bloco que determina o formato do objeto JSON que deve ser enviado na requisição
-       type: :object, # deve ser enviado um objeto JSON
-       properties: { # com as seguintes propriedades:
-         nome: { type: :string }, # propriedade nome do tipo string
-         telefone: { type: :string }, # propriedade telefone do tipo string
-         email: { type: :string } # propriedade email do tipo string
+RSpec.describe "API de Agenda de Contatos em Ruby on Rails", type: :request do
+ # Localiza o usuário de teste previamente criado no banco de dados storage/test.sqlite3.
+ # Caso esse usuário não exista, ele será criado com as credenciais abaixo.
+ let(:usuario) { Usuario.find_or_create_by(token: "74cb1f64073d4fb0dabb2beb6efd4771") { |u| u.nome = "Usuário de Teste" } }
+ # Especifica o cabeçalho Authorization com o token do usuário de teste.
+ let(:Authorization) { "Bearer #{usuario.token}" }
+ 
+ # Bloco que define as operações do caminho /contatos.
+ path "/contatos" do
+   # Bloco de especificação da operação POST /contatos.
+   post "Criar um contato." do 
+     consumes "application/json"
+     # Bloco que determina o formato do objeto JSON que deve ser enviado na requisição.
+     parameter name: :contato, in: :body, schema: {
+       # Deve ser enviado um objeto JSON...
+       type: :object,
+       # com as seguintes propriedades:
+       properties: {         
+         nome: { type: :string }, # Propriedade nome do tipo string.         
+         telefone: { type: :string }, # Propriedade telefone do tipo string.         
+         email: { type: :string } # Propriedade email do tipo string.
        },
-       required: [ :nome, :telefone ] # define quais propriedades são obrigatórias
+       # Define as propriedades obrigatórias.
+       required: [ :nome, :telefone ]
      }
 
-     # o seguinte bloco de código define que uma possível resposta dessa operação é 201 (Created), que significa que
-     # o contato foi criado com sucesso.
-     response '201', 'Contato criado com sucesso.' do
-       let(:contato) { # cria um objeto 'contato' com os seguintes dados:
+     # Bloco de código define que uma possível resposta dessa operação é 201 (Created),
+     # informando que o contato foi criado com sucesso.
+     response "201", "Contato criado com sucesso." do
+       # Cria um objeto "contato" com os seguintes dados:
+       let(:contato) {
          {
-           nome: 'Ariano Suassuna',
-           telefone: '(84) 98888-8888',
-           email: 'ariano.suassuna@academia.org.br'
+           nome: "Ariano Suassuna",
+           telefone: "(84) 98888-8888",
+           email: "ariano.suassuna@academia.org.br"
          }
        }
-       run_test! # executa o teste com o contato criado anteriormente
+       # Executa o teste com o contato criado anteriormente.
+       run_test!
      end
 
-     # o seguinte bloco de código define que uma possível resposta dessa operação é 422 (Unprocessable Entity), que
-     # significa que a requisição é inválida.
-     response '422', 'Requisição inválida.' do
-       let(:contato) { # cria um objeto 'contato' com os seguintes dados:
+     # Bloco de código define que uma possível resposta dessa operação é 422 (Unprocessable Entity),
+     # informando que a requisição é inválida.
+     response "422", "Requisição inválida." do
+       # Cria um objeto "contato" com os seguintes dados:
+       let(:contato) {
          {
-           telefone: '(84) 98888-8888',
-           email: 'ariano.suassuna@academia.org.br'
+           telefone: "(84) 98888-8888",
+           email: "ariano.suassuna@academia.org.br"
          }
        }
-       run_test! # executa o teste com o contato criado anteriormente
+       # Executa o teste com o contato criado anteriormente.
+       run_test!
+     end
+
+     # Bloco de código define que uma possível resposta dessa operação é 401 (Unauthorized),
+     # informando que o token de autenticação está ausente ou inválido.
+     response "401", "Não autorizado." do
+      # Simula a ausência do token de autenticação.
+      let(:Authorization) { nil }
+      # Executa o teste.
+      run_test!
      end
    end
 
-   get 'Listar contatos.' do # bloco de especificação da operação GET /contatos
-     # o seguinte bloco de código define que uma possível resposta dessa operação é 200 (OK), que significa que
-     # a lista de contatos foi fornecida com sucesso.
-     response '200', 'Contatos listados com sucesso.' do
-       # cria um objeto contato com os seguintes dados
-       let(:contato) { Contato.create(nome: 'Ariano Suassuna', telefone: '(84) 98888-8888', email: 'ariano.suassuna@academia.org.br') }
-       run_test! # executa o teste com o contato criado anteriormente
+   # Bloco de especificação da operação GET /contatos.
+   get "Listar contatos." do
+     # Bloco de código define que uma possível resposta dessa operação é 200 (OK),
+     # informando que a lista de contatos foi fornecida com sucesso.
+     response "200", "Contatos listados com sucesso." do
+       # Cria um objeto contato com os seguintes dados.
+       let(:contato) { Contato.create(nome: "Ariano Suassuna", telefone: "(84) 98888-8888", email: "ariano.suassuna@academia.org.br") }
+       # Executa o teste com o contato criado anteriormente.
+       run_test!
+     end
+
+     # Bloco de código define que uma possível resposta dessa operação é 401 (Unauthorized),
+     # informando que o token de autenticação está ausente ou inválido.
+     response "401", "Não autorizado." do
+      # Simula a ausência do token de autenticação.
+      let(:Authorization) { nil }
+      # Executa o teste.
+      run_test!
      end
    end
  end
 
- path '/contatos/{id}' do # bloco que define as operações do caminho /contatos/{id}
-   parameter name: :id, in: :path, type: :integer # determina que o parâmetro {id} é um número do tipo inteiro
+ # Bloco que define as operações do caminho /contatos/{id}.
+ path "/contatos/{id}" do
+   # Determina que o parâmetro {id} é um número do tipo inteiro.
+   parameter name: :id, in: :path, type: :integer
 
-   get 'Detalhar um contato.' do # bloco de especificação da operação GET /contatos/{id}
-     produces 'application/json' # determina que o corpo da resposta está no formato JSON
+   # Bloco de especificação da operação GET /contatos/{id}.
+   get "Detalhar um contato." do
+     # Determina que o corpo da resposta está no formato JSON.
+     produces "application/json"
 
-     # o seguinte bloco de código define que uma possível resposta dessa operação é 200 (OK), que significa que
-     # o contato foi encontrado.
-     response '200', 'Contato encontrado.' do
-       schema type: :object, # define o formato do corpo da resposta
-         properties: { # com as seguintes propriedades:
-           id: { type: :integer }, # um parâmtro id do tipo inteiro
-           nome: { type: :string }, # um parâmetro nome do tipo string
-           email: { type: :string }, # um parâmetro email do tipo string
-           created_at: { type: :string }, # um parâmetro created_at do tipo string
-           updated_at: { type: :string } # um parâmetro updated_at do tipo string
+     # Bloco de código define que uma possível resposta dessa operação é 200 (OK),
+     # informando que o contato foi encontrado.
+     response "200", "Contato encontrado." do
+       # Define o formato do corpo da resposta...
+       schema type: :object,
+         # com as seguintes propriedades:
+         properties: {           
+           id: { type: :integer }, # Um parâmetro id do tipo inteiro.           
+           nome: { type: :string }, # Um parâmetro nome do tipo string.
+           email: { type: :string }, # um parâmetro email do tipo string.
+           created_at: { type: :string }, # Um parâmetro created_at do tipo string.
+           updated_at: { type: :string }, # Um parâmetro updated_at do tipo string.
+           usuario_id: { type: :integer } # Um parâmetro usuario_id do tipo inteiro.
          },
-         required: [ :id, :nome, :email, :created_at, :updated_at ] # define quais propriedades são obrigatórias
+         # Define as propriedades obrigatórias.
+         required: [ :id, :nome, :email, :created_at, :updated_at, :usuario_id ]
 
-       # cria uma variável 'id' com o id de um contato existente
-       let(:id) { Contato.create(nome: 'Ariano Suassuna', telefone: '(84) 98888-8888', email: 'ariano.suassuna@academia.org.br').id }
-
-       # executa o teste
+       # Cria uma variável "id" com o id de um contato existente.
+       let(:id) { Contato.create(nome: "Ariano Suassuna", telefone: "(84) 98888-8888", email: "ariano.suassuna@academia.org.br").id }
+       # Eexecuta o teste.
        run_test!
      end
 
-     # o seguinte bloco de código define que uma possível resposta dessa operação é 404 (Not found), que significa que
-     # o contato não foi encontrado.
-     response '404', 'Contato não encontrado.' do
-       # cria uma variável 'id' com o valor 9999 (o id de um contato que não existe)
-       let(:id) { 9999 }
-
-       # executa o teste
+     # Bloco de código define que uma possível resposta dessa operação é 404 (Not found),
+     # informando que o contato não foi encontrado.
+     response "404", "Contato não encontrado." do
+       # Cria uma variável "id" com o valor 9999 (o id de um contato que não existe).
+       let(:id) { 9999 }       
+       # Executa o teste.
        run_test!
+     end
+
+     # Bloco de código define que uma possível resposta dessa operação é 401 (Unauthorized),
+     # informando que o token de autenticação está ausente ou inválido.
+     response "401", "Não autorizado." do
+      # Simula a ausência do token de autenticação.
+      let(:Authorization) { nil }   
+      # Executa o teste.
+      run_test!
      end
    end
 
-   delete 'Apagar um contato.' do # bloco de especificação da operação DELETE /contatos/{id}
-     produces 'application/json' # determina que o formato do corpo da resposta é JSON
+   # Bloco de especificação da operação DELETE /contatos/{id}.
+   delete "Apagar um contato." do
+     # Determina que o formato do corpo da resposta é JSON.
+     produces "application/json" 
 
-     # o seguinte bloco de código define que uma possível resposta dessa operação é 204 (No content), que significa que
-     # o contato foi apagado com sucesso e o corpo da resposta está vazio.
-     response '204', 'Contato apagado com sucesso.' do
-       # cria uma variável 'id' com o id de um contato existente
-       let(:id) { Contato.create(nome: 'Ariano Suassuna', telefone: '(84) 98888-8888', email: 'ariano.suassuna@academia.org.br').id }
-       run_test! # executa o teste
+     # Bloco de código define que uma possível resposta dessa operação é 204 (No content),
+     # informando que o contato foi apagado com sucesso e o corpo da resposta está vazio.
+     response "204", "Contato apagado com sucesso." do
+       # Cria uma variável "id" com o id de um contato existente.
+       let(:id) { Contato.create(nome: "Ariano Suassuna", telefone: "(84) 98888-8888", email: "ariano.suassuna@academia.org.br").id }
+       # Executa o teste.
+       run_test!
+     end
+
+     # Bloco de código define que uma possível resposta dessa operação é 401 (Unauthorized),
+     # informando que o token de autenticação está ausente ou inválido.
+     response "401", "Não autorizado." do
+      # Simula a ausência do token de autenticação.
+      let(:Authorization) { nil }
+      # Executa o teste.
+      run_test!
      end
    end
  end

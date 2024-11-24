@@ -25,7 +25,7 @@ class ContatosController < ApplicationController
             render json: @contato
         else
             # Se não pertencer, responde com o seguinte JSON e o status 404 (Não encontrado).
-            render json: { erro: "Não encontrado" }, status: :not_found
+            render json: { erro: "Não encontrado." }, status: :not_found
         end
     end
 
@@ -76,7 +76,7 @@ class ContatosController < ApplicationController
 
         def autenticar
             # Busca pelo valor do cabeçalho de nome "Authorization", apaga o prefixo "Bearer" e salva na variável token.
-            token = request.headers["Authorization"]&.gsub(/\ABearer\s+/, "")
+            token = request.headers["Authorization"]&.gsub(/\ABearer\s+/, "")            
             # Se a variável token tiver algum valor, então busca um usuário que tenha o token igual ao guardado na
             # variável token e guarda o retorno na variável de instância @usuario.
             @usuario = Usuario.find_by_token(token) if token.present?
